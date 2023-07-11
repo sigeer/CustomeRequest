@@ -2,6 +2,8 @@
     import { reactive, ref, onMounted } from 'vue'
     import { useRouter, useRoute } from 'vue-router';
     import request from '../utils/request';
+    import type { FormInstance, FormRules } from 'element-plus';
+
 
     const router = useRouter();
     const route = useRoute();
@@ -22,13 +24,26 @@
         cron: '',
         jobDetailId: null,
         remark: null
+    });
+
+    const formRules = reactive<FormRules<{
+        jobStoreId: string | null,
+        jobId: string | null,
+        name: '',
+        cron: '',
+        jobDetailId: number | null,
+        remark: string | null
+    }>>({
+        name: [{ required: true, message: "name为必填项" }],
+        jobId: [{ required: true, message: "jobId为必填项" }],
+        cron: [{ required: true, message: "cron为必填项" }]
     })
 
     const state = reactive({
         isSubmitting: false
     });
 
-    const pageData = reactive<{ jobDetailList: any[]}>({
+    const pageData = reactive<{ jobDetailList: any[] }>({
         jobDetailList: []
     })
 
@@ -44,9 +59,16 @@
 
 
     const submit = () => {
-        request.post('/api/AddOrUpdateJob', formData.value).then(() => {
-            back();
-        });
+        ruleFormRef.value?.validate((valid, fields) => {
+            if (valid) {
+                request.post('/api/AddOrUpdateJob', formData.value).then(() => {
+                    back();
+                });
+            } else {
+                console.log('error submit!', fields)
+            }
+        })
+
     }
 
     const getJobDetailList = async () => {
@@ -84,21 +106,25 @@
     const generateGuid = () => {
         formData.value.jobId = guid();
     }
+
+    const ruleFormRef = ref<FormInstance>();
 </script>
 
 <template>
     <el-form :label-position="labelPosition"
+             ref="ruleFormRef"
              label-width="100px"
+             :rules="formRules"
              :model="formData">
         <input type="hidden" v-model="formData.jobStoreId" autocomplete="off" />
-        <el-form-item label="JobId">
+        <el-form-item label="JobId" prop="jobId">
             <el-input v-model="formData.jobId" />
             <a @click="generateGuid">随机生成</a>
         </el-form-item>
-        <el-form-item label="名称">
+        <el-form-item label="名称" prop="name">
             <el-input v-model="formData.name" />
         </el-form-item>
-        <el-form-item label="Cron表达式">
+        <el-form-item label="Cron表达式" prop="cron">
             <el-input v-model="formData.cron" />
         </el-form-item>
         <el-form-item label="选择任务">

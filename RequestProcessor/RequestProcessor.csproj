@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="SigeerUtility" Version="1.0.13" />
+    <PackageReference Include="SigeerUtility.HttpRequest.Core" Version="1.0.0" />
+	  <PackageReference Include="FreeSql.Provider.Sqlite" Version="3.2.690" />
+	  <PackageReference Include="Hangfire.Storage.SQLite" Version="0.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ResponseProcessor\ResponseProcessor.csproj" />
+  </ItemGroup>
+
+</Project>

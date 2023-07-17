@@ -1,7 +1,7 @@
 <template>
     <el-container>
-        <el-header>
-            <el-space :size="10">
+        <el-header class="top-header">
+            <el-space :size="20">
                 {{ route.meta.title }}
                 <router-link :to="{ path: '/'}">计划任务列表</router-link>
                 <router-link :to="{ path: '/jobdetail/list'}">可执行任务列表</router-link>
@@ -21,3 +21,10 @@
     const route = useRoute();
 
 </script>
+
+<style>
+    .top-header {
+        line-height: 60px;
+        box-shadow: 0 0 0 1px #dcdfe6;
+    }
+</style>

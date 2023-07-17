@@ -4,6 +4,7 @@ import NewJob from '../components/EditJob.vue'
 import JobDetailMain from '../components/JobDetailMain.vue'
 import EditJobDetail from '../components/EditJobDetail.vue'
 import JobResultMain from '../components/JobResultMain.vue'
+import RegexMatch from '../views/RegexMatch.vue'
 
 const routes = [
     { path: '/', component: JobMain, meta: { title: '任务列表'} },
@@ -12,7 +13,8 @@ const routes = [
     { path: '/jobdetail/list', component: JobDetailMain, meta: { title: '请求列表' } },
     { path: '/jobdetail/new', component: EditJobDetail, meta: { title: '新请求' } },
     { path: '/jobdetail/edit/:id', component: EditJobDetail, meta: { title: '修改请求' } },
-    { path: '/jobresult/:id', component: JobResultMain, meta: { title: '修改请求' } }
+    { path: '/jobresult/:id', component: JobResultMain, meta: { title: '修改请求' } },
+    { path: '/regex', component: RegexMatch, meta: { title: '文本替换' } }
 ]
 
 export const router = createRouter({

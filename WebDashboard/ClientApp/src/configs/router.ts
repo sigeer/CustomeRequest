@@ -1,4 +1,6 @@
 ﻿import { createRouter, createWebHashHistory } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
+
 import JobMain from '../components/JobMain.vue'
 import NewJob from '../components/EditJob.vue'
 import JobDetailMain from '../components/JobDetailMain.vue'
@@ -6,7 +8,7 @@ import EditJobDetail from '../components/EditJobDetail.vue'
 import JobResultMain from '../components/JobResultMain.vue'
 import RegexMatch from '../views/RegexMatch.vue'
 
-const routes = [
+const routes: Array<RouteRecordRaw> =[
     { path: '/', component: JobMain, meta: { title: '任务列表'} },
     { path: '/job/new', component: NewJob, meta: { title: '新任务' } },
     { path: '/job/edit/:id', component: NewJob, meta: { title: '修改任务' } },

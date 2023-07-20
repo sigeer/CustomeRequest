@@ -7,6 +7,7 @@ import JobDetailMain from '../components/JobDetailMain.vue'
 import EditJobDetail from '../components/EditJobDetail.vue'
 import JobResultMain from '../components/JobResultMain.vue'
 import RegexMatch from '../views/RegexMatch.vue'
+import Option2Composition from '../views/Option2Composition.vue'
 
 const routes: Array<RouteRecordRaw> =[
     { path: '/', component: JobMain, meta: { title: '任务列表'} },
@@ -16,7 +17,8 @@ const routes: Array<RouteRecordRaw> =[
     { path: '/jobdetail/new', component: EditJobDetail, meta: { title: '新请求' } },
     { path: '/jobdetail/edit/:id', component: EditJobDetail, meta: { title: '修改请求' } },
     { path: '/jobresult/:id', component: JobResultMain, meta: { title: '修改请求' } },
-    { path: '/regex', component: RegexMatch, meta: { title: '文本替换' } }
+    { path: '/regex', component: RegexMatch, meta: { title: '文本替换' } },
+    { path: '/vue3Converter', component: Option2Composition, meta: { title: 'vue3格式转换' } }
 ]
 
 export const router = createRouter({

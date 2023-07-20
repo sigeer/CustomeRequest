@@ -2,6 +2,7 @@
 
 <script setup lang="ts">
     import { computed, ref } from "vue";
+    import { htmlUtil } from '../utils/htmlUtils';
 
 
     const original = ref("");
@@ -16,12 +17,18 @@
         for (var i = 0; i < matcherItems.value.length; i++) {
             const item = matcherItems.value[i];
 
-            if (item.regex && item.replaceStr) {
+            if (item.regex) {
                 const regex = new RegExp(item.regex, 'ig')
-                str = str.replace(regex, `<span class='b-${i}'>${item.replaceStr}</span>`);
+                str = str.replace(regex, `[b-${i}:]${item.replaceStr}[:b-${i}]`);
             }
         }
-        return str;
+        let encodedData = htmlUtil.htmlEncode(str);
+        for (var i = 0; i < matcherItems.value.length; i++) {
+            let dRegex = new RegExp(`\\[b\\-${i}\\:\\](((?!\\[\\:b\\-${i}\\]).|\n)*)\\[\\:b\\-${i}\\]`, 'ig');
+            console.log(dRegex);
+            encodedData = encodedData.replace(dRegex, `<span class='b-${i}'>$1</span>` )
+        }
+        return encodedData;
     });
 
     const output = computed(() => {
@@ -30,12 +37,12 @@
         for (var i = 0; i < matcherItems.value.length; i++) {
             const item = matcherItems.value[i];
 
-            if (item.regex && item.replaceStr) {
+            if (item.regex ) {
                 const regex = new RegExp(item.regex, 'ig')
                 str = str.replace(regex, `<span class='b-${i}'>${item.replaceStr}</span>`);
             }
         }
-        return str;
+        return htmlUtil.htmlEncode(str);
     });
 
     const addItem = () => {
@@ -67,7 +74,6 @@
         </div>
 
         <div class="pre-view div-textarea" contenteditable="true" onkeydown="return false;" onpaste="return false;" v-html="preview">
-
         </div>
     </div>
 
@@ -140,4 +146,4 @@
         outline: none;
         box-shadow: 0 0 0 1px #09f;
     }
-</style>\
+</style>

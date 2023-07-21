@@ -2,6 +2,7 @@
 
 <script setup lang="ts">
     import { computed, ref } from "vue";
+    import { json2Obj } from '../utils/jsonStringReader'
 
 
     const original = ref("");
@@ -16,7 +17,7 @@
         if (!code)
             return "";
 
-        const obj = readObj(code);
+        const obj = eval("(" + code + ")");
         const props = Object.keys(obj);
 
         let data = "{ \n<ppp> setup(props, ctx) { \n";
@@ -51,7 +52,7 @@
                 const watchKeys = Object.keys(watchObj);
                 for (var m = 0; m < watchKeys.length; m++) {
                     const watchKey = watchKeys[m];
-                    let finalData = `Vue.watch(${watchKey}, ${watchObj[watchKey].toString()})`;
+                    let finalData = `    Vue.watch(${watchKey}, ${watchObj[watchKey].toString()})`;
                     data += finalData + "\n";
                 }
                 data += "\r";
@@ -59,16 +60,15 @@
 
             if (prop === "data") {
                 let dataStr = obj.data.toString().replace(/data\(\)\s*\{(\s|\n)*return\s*((.|\n)*)\}/g, "$2");
-                dataStr = dataStr.replace(/(new \w*\([^\)]*\))/g, "new PredefineClass('$1')");
 
-                const dataObj = eval("(" + dataStr + ")");
+                const dataObj = json2Obj(dataStr);
 
                 dataKeys = Object.keys(dataObj);
                 for (var m = 0; m < dataKeys.length; m++) {
                     const dataName = dataKeys[m];
                     const dataVal = dataObj[dataName];
 
-                    let finalData = `const ${dataName} = Vue.ref(${JSON.stringify(formModel(dataVal))});`;
+                    let finalData = `    const ${dataName} = Vue.ref(${dataVal});`;
                     data += finalData + "\n";
                 }
                 data += "\r";
@@ -89,7 +89,7 @@
                 }
 
 
-                let finalData = hookStr.replace(/(\w+)\(\)\s*\{((.|\n)*)/g, `Vue.${lifecycleHooksMap[prop]}(() => {$2);`) + "\n";
+                let finalData = hookStr.replace(/(\w+)\(\)\s*\{((.|\n)*)/g, `    Vue.${lifecycleHooksMap[prop]}(() => {$2);`) + "\n";
                 data += finalData;
                 data += "\r";
             }
@@ -112,7 +112,7 @@
                     }
 
 
-                    let finalData = computedStr.replace(/(\w+)\(\)\s*\{((.|\n)*)/g, "const $1 = Vue.computed(() => {$2);") + "\n";
+                    let finalData = computedStr.replace(/(\w+)\(\)\s*\{((.|\n)*)/g, "    const $1 = Vue.computed(() => {$2);") + "\n";
                     data += finalData;
                 }
                 data += "\r";
@@ -135,8 +135,8 @@
                         methodStr = methodStr.replace(dataReg, `props.${propKeys[dataIndex]}.value`);
                     }
 
-                    let methodData: string = methodStr.replace(/(\w+)\(([^\)]*)\)\s*\{/g, 'const $1 = ($2) => {') + "\n";
-                    methodData = methodData.replace(/this\.\$emit\((((?!\)).|\n)*)\)/g, 'ctx.emit($1)');
+                    let methodData: string = methodStr.replace(/(\w+)\(([^\)]*)\)\s*\{/g, '    const $1 = ($2) => {') + "\n";
+                    methodData = methodData.replace(/this\.\$emit\((((?!\)).|\n)*)\)/g, '      ctx.emit($1)');
                     data += methodData;
                 }
                 data += "\r";

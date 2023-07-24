@@ -5,6 +5,7 @@
                 {{ route.meta.title }}
                 <router-link :to="{ path: '/'}">计划任务列表</router-link>
                 <router-link :to="{ path: '/jobdetail/list'}">可执行任务列表</router-link>
+                <router-link :to="{ path: '/vue3Converter'}">vue选项式转组合式</router-link>
                 <a href="http://localhost:7153/hangfire" target="_blank">hangfire</a>
             </el-space>
 

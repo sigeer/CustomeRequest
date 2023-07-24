@@ -144,26 +144,6 @@
         }
         data += `return {${[...dataKeys, ...propKeys, ...computedKeys, ...methodKeys].join(',')}} \n} \n}`;
         return data;
-        //code = code.replace(/data\s*\(.*?\)\s*\{/sg, 'setup() {');
-
-        //// 替换 methods: {} 为直接在 setup() 中定义函数
-        //code = code.replace(/methods\s*:\s*\{([^}]+)\}/sg, (_, methods) => {
-        //    methods = methods.replace(/(\w+)\(([^\)]*)\)\s*\{/g, 'const $1 = ($2) => {');
-        //    return methods;
-        //});
-
-        //// 替换生命周期钩子函数为对应的生命周期函数名
-        //const lifecycleHooksMap: { [key: string]: string } = {
-        //    created: 'onCreated',
-        //    mounted: 'onMounted',
-        //    updated: 'onUpdated',
-        //    destroyed: 'onUnmounted',
-        //};
-        //code = code.replace(/(created|mounted|updated|destroyed)\s*:\s*function\s*\(/g, (_, hook) => {
-        //    return `${lifecycleHooksMap[hook]}(`;
-        //});
-
-        //return code;
     };
 
     const formModel = (obj: any) => {
